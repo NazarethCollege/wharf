@@ -1,0 +1,26 @@
+---
+dockerfile: |
+  FROM naz/baseimage:v1
+
+  # Create defalt non-root user to run services as
+  RUN useradd -ms /bin/bash worker
+
+  # Get newest package list
+  RUN apt-get update
+
+  # Install base packages for development
+  RUN apt-get install -y \
+      sudo \
+      ant \
+      default-jdk \
+      python3-venv \
+      gcc
+
+  ENTRYPOINT ["/docker/entrypoint"]
+
+image:
+  repository: naz/wharf
+  tag: v1
+
+volumes:
+  - ../:/workspace

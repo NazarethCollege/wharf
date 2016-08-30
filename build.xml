@@ -1,0 +1,90 @@
+<project name="Wharf" default="dist" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless">
+  <description>
+    Build script for Wharf, a docker environment manager.
+  </description>
+  <!-- set global properties for this build -->
+  <property file="properties" />
+  <property name="version.string" value="${version.major}.${version.minor}.${version.patch}" />
+  <property name="src" location="src" />
+  <property name="build" location="build" />
+  <property name="tools" location="tools" />
+  <property name="tools.venv" location="${tools}/venv" />
+  <property name="dist" location="dist" />
+
+  <macrodef name="prop-replace">
+    <attribute name="source" />
+    <attribute name="dest" />
+    <sequential>
+      <exec executable="${tools.venv}/bin/python3">
+        <arg value="${tools}/prop-replace" />
+        <arg value="@{source}" />
+        <arg value="@{dest}" />
+      </exec>
+    </sequential>
+  </macrodef>
+
+  <target name="init">
+    <!-- Create transient directories not checked in to source control -->
+    <mkdir dir="${build}" />
+    <mkdir dir="${dist}" />
+
+    <!-- create tools virtual environment -->
+    <available property="tools.venv.created" file="${tools.venv}" />
+    <exec executable="/bin/bash" unless:true="${tools.venv.created}">
+      <arg value="-c" />
+      <arg value="python3.5 -m venv '${tools.venv}'" />
+    </exec>
+
+    <exec executable="${tools.venv}/bin/pip3" unless:true="${tools.venv.created}">
+      <arg value="install" />
+      <arg value="-r" />
+      <arg value="${tools}/requirements.txt" />
+    </exec>
+  </target>
+
+  <target name="build" depends="init" description="builds and substitutes files">
+    <!-- Copy python src to build -->
+    <copy todir="${build}/src">
+      <fileset dir="${src}" />
+    </copy>
+
+    <chmod file="${build}/src/wharf/docker/entrypoint" perm="ugo+x" />
+
+    <!-- replace setup.py file -->
+    <prop-replace source="${src}/setup.py" dest="${build}/src/setup.py" />
+    <prop-replace source="${src}/wharf/settings.py" dest="${build}/src/wharf/settings.py" />
+  </target>
+
+  <target name="test" depends="build">
+    <!-- install wharf into tools venv -->
+    <exec executable="${tools.venv}/bin/pip">
+      <arg value="install" />
+      <arg value="--upgrade" />
+      <arg value="${build}/src" />
+    </exec>
+
+    <!-- run tests -->
+    <exec executable="${tools.venv}/bin/pytest">
+      <arg value="-s" />
+      <arg value="test/suites" />
+      <env key="WHARF_EXECUTABLE" value="${tools.venv}/bin/wharf" />
+      <env key="WHARF_VERSION" value="${version.string}" />
+    </exec>
+  </target>
+
+  <target name="dist" depends="build" description="generate the distribution">
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}"/>
+    <exec executable="${tools.venv}/bin/python" dir="${build}/src">
+      <arg value="${build}/src/setup.py" />
+      <arg value="sdist" />
+    </exec>
+  </target>
+
+  <target name="clean" description="clean up">
+    <!-- Deletes transient folders -->
+    <delete dir="${build}" />
+    <delete dir="${dist}" />
+    <delete dir="${tools.venv}" />
+  </target>
+</project>

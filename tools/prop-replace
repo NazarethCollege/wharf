@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+
+import os, ast, sys, jinja2, time
+
+here = os.path.dirname(os.path.realpath(__file__))
+properties = os.path.join(os.path.dirname(here), 'properties')
+
+
+context = {}
+
+with open(properties, 'r') as prop_file:
+    for line in prop_file:
+        identifier, value = line.split('=')
+        t = context
+        last_t = None
+        for part in identifier.split('.'):
+            last_t = t
+            t = t.setdefault(part, {})
+
+        value = value.replace('\n', '')
+        value = dict({
+            'true': 'True',
+            'false': 'False'
+        }).get(value.lower(), value)
+
+        try:
+            last_t[part] = ast.literal_eval(value)
+        except SyntaxError:
+            last_t[part] = value
+
+src = sys.argv[1]
+dest = sys.argv[2]
+
+jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(src)))
+template = jinja_env.get_template(os.path.basename(src))
+
+context.update({
+    'compile_timestamp': time.time()
+})
+
+with open(dest, 'w') as dest_file:
+    dest_file.write(template.render(context))
