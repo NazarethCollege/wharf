@@ -3,7 +3,8 @@ from collections import namedtuple
 
 
 ImageConfig = namedtuple('ImageConfig', ['repository', 'tag'])
-
+NetworkConfig = namedtuple('NetworkConfig', ['name', 'ipv4_address', 'aliases', 'links'])
+PortMapping = namedtuple('PortMapping', ['host', 'container'])
 
 class Config(object):
 
@@ -37,5 +38,46 @@ class Config(object):
     def volumes(self):
         return self._data.get('volumes', {})
 
+    @property
+    def port_mappings(self):
+        mappings = self._data.get('port_mappings', [])
+        parsed_mappings = []
+        for mapping in mappings:
+            parsed_mappings.append(
+                PortMapping(mapping.get('host'), mapping.get('container'))
+            )
+
+        return parsed_mappings
+
+    @property
+    def entrypoint(self):
+        return self._data.get('entrypoint', None)
+
+    @property
+    def hostname(self):
+        return self._data.get('hostname', None)
+
+    @property
+    def name(self):
+        return self._data.get('name', None)
+
+    @property
+    def extra_hosts(self):
+        return self._data.get('extra_hosts', None)
+
+    @property
+    def network(self):
+        network = self._data.get('network', None)
+        network_config = None
+
+        if network:
+            network_config = NetworkConfig(
+                network['name'],
+                network['ipv4_address'],
+                network.get('aliases', []),
+                network.get('links', [])
+            )
+
+        return network_config
 
 

@@ -78,6 +78,7 @@
     <exec executable="${tools.venv}/bin/python" dir="${build}/src">
       <arg value="${build}/src/setup.py" />
       <arg value="sdist" />
+      <arg value="--dist-dir=${dist}" />
     </exec>
   </target>
 

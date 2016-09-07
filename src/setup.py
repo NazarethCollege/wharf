@@ -79,6 +79,7 @@ setup(
     install_requires=[
         'click==6.6',
         'pyyaml==3.12',
+        'jinja2==2.8',
         'docker-py',
         'dockerpty'
     ],

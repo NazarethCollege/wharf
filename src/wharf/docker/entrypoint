@@ -8,7 +8,9 @@ if [ "$1" = 'dev' ]; then
     chown developer:developer /workspace
     echo "developer ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-    exec su - developer
+    ln -s /ssh /home/developer/.ssh
+
+    exec sudo -H -u developer bash
 fi
 
 exec "$@"

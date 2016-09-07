@@ -1,7 +1,8 @@
 import click, os
 from . import settings, configuration, process_manager
-import tempfile
+import tempfile, jinja2
 from distutils import dir_util
+import yaml
 
 
 @click.group()
@@ -28,10 +29,26 @@ def run(config_path, command='dev'):
 
 
 @cli.command()
+@click.argument("config_path")
+@click.argument("template")
+def create_configuration(config_path, template):
+    abs_config_path = os.path.abspath(config_path)
+    abs_template_path = os.path.abspath(template)
+
+    with open(abs_config_path, 'r') as yaml_file:
+        context = yaml.load(yaml_file)
+
+    jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(abs_template_path)))
+    template = jinja_env.get_template(os.path.basename(abs_template_path))
+
+    click.echo(template.render(context))
+
+
+@cli.command()
 def version():
     major, minor, patch = settings.VERSION
 
-    click.echo("Wharf version {}.{}.{} compiled at {}".format(
+    click.echo("Wharf version {}.{}.{} compiled on {}".format(
         major,
         minor,
         patch,

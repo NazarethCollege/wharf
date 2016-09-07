@@ -2,12 +2,9 @@
 dockerfile: |
   FROM naz/baseimage:v1
 
-  # Create defalt non-root user to run services as
-  RUN useradd -ms /bin/bash worker
-
   # Get newest package list
   RUN apt-get update
-  something
+
   # Install base packages for development
   RUN apt-get install -y \
       sudo \
@@ -20,12 +17,20 @@ dockerfile: |
 
 image:
   repository: naz/wharf
-  tag: v1
+  tag: v1-dev
 
-environment:
-  key: value
-  key2: value2
+name: wharf
+hostname: wharf
+
+network:
+  name: docker0
+  ipv4_address: 172.18.0.2
+  aliases:
+    - wharf
+
+port_mappings:
+  - host: 8080
+    container: 80
 
 volumes:
   - ../:/workspace
-  - /Users/claffer2/workspace/wharf/Base/docker/:/docker
