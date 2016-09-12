@@ -1,4 +1,4 @@
-import yaml
+import templated_yaml.api as tapi
 from collections import namedtuple
 
 
@@ -12,8 +12,7 @@ class Config(object):
     def load_from(cls, path):
         config = Config()
         config._file_location = path
-        with open(path, 'r') as yaml_file:
-            config._data = yaml.load(yaml_file)
+        config._data = tapi.render_from_path(path)
 
         return config
 

@@ -10,12 +10,20 @@ from setuptools import setup, find_packages
 # To use a consistent encoding
 from codecs import open
 from os import path
+from pip.download import PipSession
 
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
+
+from pip.req import parse_requirements
+
+# parse_requirements() returns generator of pip.req.InstallRequirement objects
+install_reqs = parse_requirements(path.join(here, 'requirements.txt'), session=PipSession())
+
+reqs = [str(ir.req) for ir in install_reqs]
 
 setup(
     name='wharf',
@@ -76,12 +84,10 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=[
-        'click==6.6',
-        'pyyaml==3.12',
-        'jinja2==2.8',
-        'docker-py',
-        'dockerpty'
+    install_requires=reqs,
+
+    dependency_links=[
+        'https://developer.naz.edu/pypi/simple/templated-yaml/',
     ],
 
     # List additional groups of dependencies here (e.g. development

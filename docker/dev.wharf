@@ -3,7 +3,8 @@ dockerfile: |
   FROM naz/baseimage:v1
 
   # Get newest package list
-  RUN apt-get update
+  RUN apt-get update && \
+      apt-get upgrade -y
 
   # Install base packages for development
   RUN apt-get install -y \
@@ -11,26 +12,19 @@ dockerfile: |
       ant \
       default-jdk \
       python3-venv \
-      gcc
+      gcc \
+      python3-pip
+
+  ADD etc/pip.conf /etc/pip.conf
 
   ENTRYPOINT ["/docker/entrypoint"]
 
-image:
-  repository: naz/wharf
-  tag: v1-dev
-
 name: wharf
-hostname: wharf
+hostname: "{{ name }}"
 
-network:
-  name: docker0
-  ipv4_address: 172.18.0.2
-  aliases:
-    - wharf
-
-port_mappings:
-  - host: 8080
-    container: 80
+image:
+  repository: "naz/{{ name }}"
+  tag: v1-dev
 
 volumes:
   - ../:/workspace

@@ -31,6 +31,8 @@ def build_image(config, logger=lambda x: None):
         for line in lines:
             if line.get('stream'):
                 logger(line['stream'].replace('\n', ''))
+            elif line.get('status'):
+                logger(line['status'].replace('\n', ''))
             else:
                 error = True
                 logger(line.get('errorDetail', {}).get('message').replace('\n', ''))
