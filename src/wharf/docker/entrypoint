@@ -10,7 +10,7 @@ if [ "$1" = 'dev' ]; then
 
     ln -s /ssh /home/developer/.ssh
 
-    exec sudo -H -u developer bash
+    exec sudo -E -H -u developer bash
 fi
 
 exec "$@"
