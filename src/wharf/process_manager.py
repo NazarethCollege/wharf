@@ -4,7 +4,7 @@ import json
 
 
 def build_image(config, logger=lambda x: None):
-    client = docker.Client()
+    client = docker.Client(version="auto")
     encoded_dockerfile = BytesIO(config.dockerfile.encode('utf-8'))
 
     context = docker.utils.tar(os.path.dirname(config.file_location))
@@ -42,7 +42,7 @@ def build_image(config, logger=lambda x: None):
 
 
 def run_image(config, command, logger=lambda x: None):
-    client = docker.Client()
+    client = docker.Client(version="auto")
 
     all_volumes = config.volumes
     volumes = [v.split(':')[1] for v in all_volumes]
