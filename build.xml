@@ -59,13 +59,14 @@
     <!-- install wharf into tools venv -->
     <exec executable="${tools.venv}/bin/pip">
       <arg value="install" />
-      <arg value="--upgrade" />
       <arg value="${build}/src" />
+      <arg value="--upgrade" />
     </exec>
 
     <!-- run tests -->
     <exec executable="${tools.venv}/bin/pytest">
       <arg value="-s" />
+      <arg value="-v" />
       <arg value="test/suites" />
       <env key="WHARF_EXECUTABLE" value="${tools.venv}/bin/wharf" />
       <env key="WHARF_VERSION" value="${version.string}" />

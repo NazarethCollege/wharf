@@ -1,0 +1,4 @@
+---
+dockerignore:
+  - "first/path"
+  - "!second/path"

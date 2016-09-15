@@ -1,10 +1,16 @@
 import templated_yaml.api as tapi
 from collections import namedtuple
+from wharf import settings
 
 
 ImageConfig = namedtuple('ImageConfig', ['repository', 'tag'])
 NetworkConfig = namedtuple('NetworkConfig', ['name', 'ipv4_address', 'aliases', 'links'])
 PortMapping = namedtuple('PortMapping', ['host', 'container'])
+WharfConfig = namedtuple('WharfConfig', ['min_version'])
+BuildContextConfig = namedtuple('BuildContextConfig', ['excludes'])
+
+class ConfigurationError(Exception):
+    pass
 
 class Config(object):
 
@@ -13,6 +19,14 @@ class Config(object):
         config = Config()
         config._file_location = path
         config._data = tapi.render_from_path(path)
+        config._data.setdefault('volumes', [])
+        config._data.setdefault('dockerignore', [])
+        config._data.setdefault('environment', {})
+        config._data.setdefault('port_mappings', [])
+
+        if config.wharf.min_version > (0, 0, 0):
+            if config.wharf.min_version > settings.VERSION:
+                raise ConfigurationError("This configuration requires at least wharf version " + str(config.wharf.min_version))
 
         return config
 
@@ -35,7 +49,7 @@ class Config(object):
 
     @property
     def volumes(self):
-        return self._data.get('volumes', {})
+        return self._data.get('volumes')
 
     @property
     def port_mappings(self):
@@ -63,6 +77,23 @@ class Config(object):
     @property
     def extra_hosts(self):
         return self._data.get('extra_hosts', None)
+
+    @property
+    def wharf(self):
+        wharf_node = self._data.get('wharf', {})
+        min_version = wharf_node.get('min_version', '0.0.0')
+        if not isinstance(min_version, str):
+            raise ConfigurationError("wharf.min_version must be a string")
+
+        config = (
+            ( 'min_version', tuple([ int(v) for v in min_version.split('.') ]) ),
+        )
+
+        return WharfConfig( *[c[1] for c in config] )
+
+    @property
+    def dockerignore(self):
+        return self._data.get('dockerignore', [])
 
     @property
     def network(self):

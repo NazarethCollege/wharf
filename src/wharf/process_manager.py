@@ -7,7 +7,7 @@ def build_image(config, logger=lambda x: None):
     client = docker.Client(version="auto")
     encoded_dockerfile = BytesIO(config.dockerfile.encode('utf-8'))
 
-    context = docker.utils.tar(os.path.dirname(config.file_location))
+    context = docker.utils.tar(os.path.dirname(config.file_location), exclude=config.dockerignore)
     context.seek(0)
 
     import tarfile

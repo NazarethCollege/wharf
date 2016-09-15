@@ -1,8 +1,5 @@
 import os, subprocess
-
-
-def config_path(folder, file):
-    return os.path.join(os.path.dirname(os.path.dirname(__file__)), 'configs/{}/{}'.format(folder, file))
+from lib import *
 
 
 def expected_output(config):
@@ -28,4 +25,3 @@ def test_version():
 def test_create_configuration():
     result = run_command('create_configuration', config_path('simple', 'input.yml'), config_path('simple', 'template.tpl'))
     assert str(result.stdout.decode('utf-8')) == expected_output('simple')
-
