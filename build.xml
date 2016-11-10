@@ -10,6 +10,7 @@
   <property name="tools" location="tools" />
   <property name="tools.venv" location="${tools}/venv" />
   <property name="dist" location="dist" />
+  <property name="docs" location="docs" />
 
   <macrodef name="prop-replace">
     <attribute name="source" />
@@ -55,14 +56,7 @@
     <prop-replace source="${src}/wharf/settings.py" dest="${build}/src/wharf/settings.py" />
   </target>
 
-  <target name="test" depends="build">
-    <!-- install wharf into tools venv -->
-    <exec executable="${tools.venv}/bin/pip">
-      <arg value="install" />
-      <arg value="${build}/src" />
-      <arg value="--upgrade" />
-    </exec>
-
+  <target name="test" depends="venv-install">
     <!-- run tests -->
     <exec executable="${tools.venv}/bin/pytest">
       <arg value="-s" />
@@ -83,10 +77,29 @@
     </exec>
   </target>
 
+  <target name="venv-install" depends="build">
+    <!-- install wharf into tools venv -->
+    <exec executable="${tools.venv}/bin/pip">
+      <arg value="install" />
+      <arg value="${build}/src" />
+      <arg value="--upgrade" />
+    </exec>
+  </target>
+
+  <target name="docs" depends="venv-install" description="generate the documentation">
+    <exec executable="${tools.venv}/bin/sphinx-build">
+        <arg value="-d" />
+        <arg value="${docs}/build/doctrees" />
+        <arg value="${docs}/source" />
+        <arg value="${docs}/build/html" />
+    </exec>
+  </target>
+
   <target name="clean" description="clean up">
     <!-- Deletes transient folders -->
     <delete dir="${build}" />
     <delete dir="${dist}" />
     <delete dir="${tools.venv}" />
+    <delete dir="${docs}/build" />
   </target>
 </project>
