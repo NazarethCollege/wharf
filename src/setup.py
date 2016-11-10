@@ -37,7 +37,7 @@ setup(
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://gitlab.naz.edu/',
+    url='https://github.com/NazarethCollege/wharf',
 
     # Author details
     author='Dave Lafferty',
@@ -87,7 +87,6 @@ setup(
     install_requires=reqs,
 
     dependency_links=[
-        'https://developer.naz.edu/pypi/simple/templated-yaml/',
     ],
 
     # List additional groups of dependencies here (e.g. development

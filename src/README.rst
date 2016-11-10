@@ -1,1 +1,1 @@
-docker network create -d bridge --subnet=172.18.0.0/16 wharfnet
+Refer to the documentation folder on GitHub for more information.
