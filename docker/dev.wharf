@@ -15,9 +15,6 @@ dockerfile: |
 name: wharf
 hostname: "{{ name }}"
 
-extra_hosts:
-  testhost: "10.0.0.110" 
-
 image:
   repository: "naz/{{ name }}"
   tag: v1-dev
