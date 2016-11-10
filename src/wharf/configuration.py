@@ -1,6 +1,7 @@
 import templated_yaml.api as tapi
 from collections import namedtuple
 from wharf import settings
+from .context_globals import globals as context_globals
 
 
 ImageConfig = namedtuple('ImageConfig', ['repository', 'tag'])
@@ -18,7 +19,7 @@ class Config(object):
     def load_from(cls, path):
         config = Config()
         config._file_location = path
-        config._data = tapi.render_from_path(path)
+        config._data = tapi.render_from_path(path, globals=context_globals)
         config._data.setdefault('volumes', [])
         config._data.setdefault('dockerignore', [])
         config._data.setdefault('environment', {})

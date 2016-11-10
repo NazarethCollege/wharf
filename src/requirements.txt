@@ -1,8 +1,6 @@
---extra-index-url https://developer.naz.edu/pypi/simple/
-
-click==6.6
-pyyaml==3.12
-jinja2==2.8
-docker-py
-dockerpty
-templated-yaml==0.0.1
+click < 6.7
+pyyaml < 3.13
+jinja2 < 2.9
+docker-py < 1.11
+dockerpty < 0.5
+templated-yaml > 0.1.3, < 0.2

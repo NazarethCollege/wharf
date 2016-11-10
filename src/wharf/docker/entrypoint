@@ -5,12 +5,15 @@ if [ "$1" = 'dev' ]; then
     USER_ID=${LOCAL_USER_ID:-9001}
     echo "Creating 'developer' with UID : $USER_ID"
     useradd --shell /bin/bash -u $USER_ID -o -c "" -m developer -b /home
-    chown developer:developer /workspace
     echo "developer ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
     ln -s /ssh /home/developer/.ssh
 
-    exec sudo -E -H -u developer bash
+    if [ $# -gt 1 ]; then
+        exec /sbin/setuser developer ${@:2}
+    else
+        exec sudo -E -H -u developer bash
+    fi
 fi
 
 exec "$@"

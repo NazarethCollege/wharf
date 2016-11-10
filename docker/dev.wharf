@@ -15,8 +15,6 @@ dockerfile: |
       gcc \
       python3-pip
 
-  ADD etc/pip.conf /etc/pip.conf
-
   ENTRYPOINT ["/docker/entrypoint"]
 
 name: wharf

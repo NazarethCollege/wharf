@@ -1,6 +1,7 @@
 import docker, dockerpty, os
 from io import BytesIO
 import json
+import wharf.context_globals
 
 
 def build_image(config, logger=lambda x: None):
@@ -107,4 +108,5 @@ def run_image(config, command, logger=lambda x: None):
         networking_config=networking_config
     )
 
+    wharf.context_globals.before_container_start()
     pty = dockerpty.start(client, container)
