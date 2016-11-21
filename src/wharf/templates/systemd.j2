@@ -1,0 +1,8 @@
+[Unit]
+Description=Development Container for wharf file at {{ wharf_file_location }}
+After=docker.service
+Requires=docker.service
+
+[Service]
+ExecStart=/usr/bin/env wharf run {{ wharf_file_location }} my_init
+ExecStop=/usr/bin/docker kill {{ image_name }}

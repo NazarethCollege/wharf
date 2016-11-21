@@ -1,0 +1,8 @@
+[Unit]
+Description=Development Container for wharf file at /workspace/test/configs/systemd/input.yml
+After=docker.service
+Requires=docker.service
+
+[Service]
+ExecStart=/usr/bin/env wharf run /workspace/test/configs/systemd/input.yml my_init
+ExecStop=/usr/bin/docker kill test-systemd

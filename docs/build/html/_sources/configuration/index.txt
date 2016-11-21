@@ -12,14 +12,14 @@ Keys
 wharf
 ~~~~~~~~~~~~~~~~~~~
 
-**min_version**: Default: ``"0.0.0"``
+**min_version** - Default: ``(0,0,0)``
 
 Wharf meta-data, such as the minimum version required to parse this config file.
 
 .. code-block:: yaml
 
   wharf:
-    min_version: "0.3.4"
+    min_version: (1,0,0)
 
 name
 ~~~~~~~~~~~~~~~~~~~

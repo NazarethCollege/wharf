@@ -67,12 +67,17 @@
     </exec>
   </target>
 
-  <target name="dist" depends="build" description="generate the distribution">
+  <target name="dist" depends="clean, docs, build" description="generate the distribution">
     <!-- Create the distribution directory -->
     <mkdir dir="${dist}"/>
     <exec executable="${tools.venv}/bin/python" dir="${build}/src">
       <arg value="${build}/src/setup.py" />
       <arg value="sdist" />
+      <arg value="--dist-dir=${dist}" />
+    </exec>
+    <exec executable="${tools.venv}/bin/python" dir="${build}/src">
+      <arg value="${build}/src/setup.py" />
+      <arg value="bdist_wheel" />
       <arg value="--dist-dir=${dist}" />
     </exec>
   </target>

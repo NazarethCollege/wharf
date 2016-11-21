@@ -82,12 +82,12 @@ class Config(object):
     @property
     def wharf(self):
         wharf_node = self._data.get('wharf', {})
-        min_version = wharf_node.get('min_version', '0.0.0')
-        if not isinstance(min_version, str):
-            raise ConfigurationError("wharf.min_version must be a string")
+        min_version = wharf_node.get('min_version', (0,0,0))
+        if not isinstance(min_version, tuple):
+            raise ConfigurationError("wharf.min_version must be a tuple in the format (major,minor,patch)")
 
         config = (
-            ( 'min_version', tuple([ int(v) for v in min_version.split('.') ]) ),
+            ( 'min_version', min_version ),
         )
 
         return WharfConfig( *[c[1] for c in config] )

@@ -76,7 +76,8 @@ setup(
 
     package_data={
         '': [
-            'docker/*'
+            'docker/*',
+            'templates/*'
         ]
     },
 

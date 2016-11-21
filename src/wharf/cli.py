@@ -24,6 +24,14 @@ def create_configuration(config_path, template):
 
 
 @cli.command()
+@click.argument("config_path")
+@click.option('--format', type=click.Choice(['systemd']), default='systemd')
+def create_init_file(config_path, format):
+    config = api.create_init_file(config_path, format)
+    click.echo(config)
+
+
+@cli.command()
 def version():
     major, minor, patch = settings.VERSION
 

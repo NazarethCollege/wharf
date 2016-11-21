@@ -25,3 +25,10 @@ def test_build_with_context_exclude(mocked_build, mocked_run):
     config = mocked_build.call_args[0][0]
 
     assert config.dockerignore == ['first/path', '!second/path']
+
+
+def test_generate_systemd():
+    config = api.create_init_file(config_path('systemd', 'input.yml'), 'systemd')
+    with open(config_path('systemd', 'expected-output.yml')) as handle: expected = handle.read() 
+
+    assert config == expected
