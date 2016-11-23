@@ -1,7 +1,8 @@
 from . import configuration, process_manager, api
 import tempfile, jinja2
 from distutils import dir_util
-import os, yaml
+import os, yaml, ast, sys, jinja2, time
+from .properties import Properties
 
 
 def run(config_path, command='dev', logger=lambda x: None):
@@ -30,6 +31,13 @@ def create_configuration(config_path, template_path):
     template = jinja_env.get_template(os.path.basename(abs_template_path))
 
     return template.render(context)
+
+
+def load_properties(file_location):
+    p = Properties()
+    p.load(open(file_location))
+
+    return p.getPropertyDict()
 
 
 def create_init_file(config_path, format):

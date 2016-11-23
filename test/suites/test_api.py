@@ -32,3 +32,21 @@ def test_generate_systemd():
     with open(config_path('systemd', 'expected-output.yml')) as handle: expected = handle.read() 
 
     assert config == expected
+
+
+@patch('wharf.process_manager.build_image')
+@patch('wharf.process_manager.run_image')
+def test_load_properties(mocked_build, mocked_run):
+    api.run(config_path('propfile', 'input.yml'))
+    config = mocked_build.call_args[0][0]
+
+    assert config.name == 'propfile_test'
+    assert config.image.tag == '1.2.3'
+
+
+def test_comprehensive_properties_file():
+    props = api.load_properties(config_path('comprehensive_properties', 'properties'))
+    assert props['simple'] == 'one'
+    assert props['nested']['variable'] == 'value'
+    assert props['number'] == '2'
+    assert props['floating'] == '5.5'

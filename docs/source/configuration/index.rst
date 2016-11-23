@@ -177,7 +177,7 @@ Global Helpers
 
 -----
 
-Helpers can be used in the YAML file by using the special handlebars syntax ``{{ helper_name(argument) }}``
+Helpers can be used in the YAML file by using special handlebars syntax ``{{ helper_name(argument) }}``
 
 next_ip(network)
 ~~~~~~~~~~~~~~~~~~~
@@ -188,5 +188,10 @@ random_open_port()
 ~~~~~~~~~~~~~~~~~~~
 
 Finds a random open port on the host machine to bind to.
+
+load_properties(relative_path)
+~~~~~~~~~~~~~~~~~~~
+
+Loads a Java properties file located at a path relative to the wharf configuration file as a nested dictionary.
 
 .. toctree::

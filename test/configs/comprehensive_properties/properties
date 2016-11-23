@@ -1,0 +1,4 @@
+simple=one
+number=2
+floating=5.5
+nested.variable=value

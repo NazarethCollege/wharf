@@ -1,0 +1,6 @@
+---
+properties: "{{ load_properties('properties') }}"
+name: "{{ properties.name }}"
+image:
+  repository: naz/propfile
+  tag: "{{ properties.version.major }}.{{ properties.version.minor }}.{{ properties.version.patch }}"

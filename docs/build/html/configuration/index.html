@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Configuration &mdash; Wharf 1.0.0 documentation</title>
+  <title>Configuration &mdash; Wharf 1.0.1 documentation</title>
   
 
   
@@ -33,7 +33,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Wharf 1.0.0 documentation" href="../index.html"/>
+    <link rel="top" title="Wharf 1.0.1 documentation" href="../index.html"/>
         <link rel="next" title="Default Entrypoint" href="../defaultentrypoint.html"/>
         <link rel="prev" title="Usage" href="../usage/index.html"/> 
 
@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                1.0.0
+                1.0.1
               </div>
             
           
@@ -105,7 +105,8 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#global-helpers">Global Helpers</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#next-ip-network">next_ip(network)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#random-open-port">random_open_port()</a><ul class="simple">
+<li class="toctree-l3"><a class="reference internal" href="#random-open-port">random_open_port()</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-properties-relative-path">load_properties(relative_path)</a><ul class="simple">
 </ul>
 </li>
 </ul>
@@ -304,6 +305,10 @@ access another container by name instead of by using volatile ip addresses.</p>
 <div class="section" id="random-open-port">
 <h3>random_open_port()<a class="headerlink" href="#random-open-port" title="Permalink to this headline">¶</a></h3>
 <p>Finds a random open port on the host machine to bind to.</p>
+</div>
+<div class="section" id="load-properties-relative-path">
+<h3>load_properties(relative_path)<a class="headerlink" href="#load-properties-relative-path" title="Permalink to this headline">¶</a></h3>
+<p>Loads a Java properties file located at a path relative to the wharf configuration file as a nested dictionary.</p>
 <div class="toctree-wrapper compound">
 </div>
 </div>
@@ -351,7 +356,7 @@ access another container by name instead of by using volatile ip addresses.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.0',
+            VERSION:'1.0.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

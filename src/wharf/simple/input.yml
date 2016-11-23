@@ -1,0 +1,10 @@
+---
+simple_variable: val
+
+list_of_variables:
+  - entry 1
+  - entry 2
+
+dictionary_of_variables:
+  key1: val1
+  key2: val2
