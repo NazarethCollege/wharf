@@ -12,7 +12,8 @@ def cli(ctx):
 @click.argument('config_path')
 @click.argument('command', default='dev')
 def run(config_path, command='dev'):
-    api.run(config_path, command, click.echo)
+    exit_code = api.run(config_path, command, click.echo)
+    exit(exit_code)
 
 
 @cli.command()

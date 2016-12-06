@@ -17,7 +17,7 @@ def run(config_path, command='dev', logger=lambda x: None):
     config.volumes.append('{}:/docker'.format(tmp_dir))
 
     process_manager.build_image(config, logger)
-    process_manager.run_image(config, command, logger)
+    return process_manager.run_image(config, command, logger)
 
 
 def create_configuration(config_path, template_path):

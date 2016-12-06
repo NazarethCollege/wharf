@@ -110,3 +110,6 @@ def run_image(config, command, logger=lambda x: None):
 
     wharf.context_globals.before_container_start()
     pty = dockerpty.start(client, container)
+    exit_code = int(client.inspect_container(container).get('State', {}).get('ExitCode', 0)) 
+    
+    return exit_code

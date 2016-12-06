@@ -177,7 +177,7 @@ Global Helpers
 
 -----
 
-Helpers can be used in the YAML file by using the special handlebars syntax ``{{ helper_name(argument) }}``
+Helpers can be used in the YAML file by using special handlebars syntax ``{{ helper_name(argument) }}``
 
 next_ip(network)
 ~~~~~~~~~~~~~~~~~~~
