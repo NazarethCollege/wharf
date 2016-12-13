@@ -3,6 +3,8 @@ import tempfile, jinja2
 from distutils import dir_util
 import os, yaml, ast, sys, jinja2, time
 from .properties import Properties
+from .context_globals import wrap_globals
+import templated_yaml.api as tapi
 
 
 def run(config_path, command='dev', logger=lambda x: None):
@@ -24,8 +26,7 @@ def create_configuration(config_path, template_path):
     abs_config_path = os.path.abspath(config_path)
     abs_template_path = os.path.abspath(template_path)
 
-    with open(abs_config_path, 'r') as yaml_file:
-        context = yaml.load(yaml_file)
+    context = tapi.render_from_path(abs_config_path, globals=wrap_globals(None))
 
     jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(abs_template_path)))
     template = jinja_env.get_template(os.path.basename(abs_template_path))

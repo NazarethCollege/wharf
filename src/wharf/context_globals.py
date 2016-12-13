@@ -33,7 +33,10 @@ def random_open_port(context):
 
 
 def load_properties(path, context):
-    properties = api.load_properties(os.path.join(os.path.dirname(context.file_location), path))
+    if context:
+        properties = api.load_properties(os.path.join(os.path.dirname(context.file_location), path))
+    else:
+        properties = api.load_properties(path)
     
     return properties
 
