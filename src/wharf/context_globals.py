@@ -32,11 +32,24 @@ def random_open_port(context):
     return str(port)
 
 
-def load_properties(path, context):
-    if context:
-        properties = api.load_properties(os.path.join(os.path.dirname(context.file_location), path))
-    else:
-        properties = api.load_properties(path)
+def load_properties(paths, context):
+    if type(paths) is not list:
+        paths = [paths,]
+    
+    file_found = False
+    for path in paths:
+        try:
+            if context:
+                properties = api.load_properties(os.path.join(os.path.dirname(context.file_location), path))
+            else:
+                properties = api.load_properties(path)
+
+            file_found = True
+        except FileNotFoundError:
+            pass
+
+    if not file_found:
+        raise FileNotFoundError("None of the following properties files were found: {}".format(','.join(paths)))
     
     return properties
 
