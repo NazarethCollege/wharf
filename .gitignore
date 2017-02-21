@@ -2,7 +2,7 @@
 *.pyc
 *.pyo
 .idea
-build
+/build/
 dist
 venv
 !docs/build
