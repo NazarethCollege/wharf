@@ -16,10 +16,10 @@ class ConfigurationError(Exception):
 class Config(object):
 
     @classmethod
-    def load_from(cls, path):
+    def load_from(cls, path, extra_context={}):
         config = Config()
         config._file_location = path
-        config._data = tapi.render_from_path(path, globals=wrap_globals(config))
+        config._data = tapi.render_from_path(path, context=extra_context, globals=wrap_globals(config))
         config._data.setdefault('volumes', [])
         config._data.setdefault('dockerignore', [])
         config._data.setdefault('environment', {})

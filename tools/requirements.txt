@@ -1,5 +1,5 @@
 wheel
-jinja2~=2.8
+jinja2~=2.9
 pytest~=3.0.1
 Sphinx~=1.4.6
 sphinx_rtd_theme~=0.1.9

@@ -1,0 +1,4 @@
+---
+name: "default name"
+top_prop:
+  nested_prop: "default prop value"

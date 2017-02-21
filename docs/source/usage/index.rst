@@ -19,7 +19,8 @@ Run
 
 .. code-block:: bash
 
-   wharf run CONFIG_PATH [COMMAND]
+   wharf run [OPTIONS] CONFIG_PATH [COMMAND]
+     --config-override    A YAML-formatted string that overrides values in the main configuration
 
 Executes the configuration found at CONFIG_PATH.  If COMMAND is empty, the command "dev" is passed to the container, which is parsed
 by the default entrypoint at `/docker/entrypoint`.

@@ -50,3 +50,12 @@ def test_comprehensive_properties_file():
     assert props['nested']['variable'] == 'value'
     assert props['number'] == '2'
     assert props['floating'] == '5.5'
+
+
+@patch('wharf.process_manager.build_image')
+@patch('wharf.process_manager.run_image')
+def test_override_properties(mocked_build, mocked_run):
+    api.run(config_path('override-name', 'input.yml'), config_override='{ name: new, top_prop: { nested_prop: "new-nested" } }')
+    config = mocked_build.call_args[0][0]
+
+    assert config.name == 'new'

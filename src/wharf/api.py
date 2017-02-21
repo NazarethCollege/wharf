@@ -7,9 +7,11 @@ from .context_globals import wrap_globals
 import templated_yaml.api as tapi
 
 
-def run(config_path, command='dev', logger=lambda x: None):
+def run(config_path, command='dev', config_override=None, logger=lambda x: None):
     abs_config_path = os.path.abspath(config_path)
-    config = configuration.Config.load_from(abs_config_path)
+    override_data = tapi.render_from_string(config_override) if config_override else {}
+    config = configuration.Config.load_from(abs_config_path, override_data)
+
     tmp_dir = tempfile.mkdtemp(dir='/tmp')
     dir_util.copy_tree(
         os.path.join(os.path.dirname(__file__), 'docker'),

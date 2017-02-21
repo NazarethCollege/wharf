@@ -11,8 +11,9 @@ def cli(ctx):
 @cli.command()
 @click.argument('config_path')
 @click.argument('command', default='dev')
-def run(config_path, command='dev'):
-    exit_code = api.run(config_path, command, click.echo)
+@click.option('--config-override', default=None)
+def run(config_path, command='dev', config_override=None):
+    exit_code = api.run(config_path, command, config_override, click.echo)
     exit(exit_code)
 
 
