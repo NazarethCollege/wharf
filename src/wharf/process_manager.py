@@ -35,8 +35,9 @@ def build_image(config, logger=lambda x: None):
             elif line.get('status'):
                 logger(line['status'].replace('\n', ''))
             else:
-                error = True
-                logger(line.get('errorDetail', {}).get('message').replace('\n', ''))
+                if 'errorDetail' in line:
+                    error = True
+                    logger(line.get('errorDetail', {}).get('message', '').replace('\n', ''))
 
     if error:
         raise Exception("Failed to build image")
