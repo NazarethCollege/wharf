@@ -7,7 +7,7 @@ from . import api
 _conns = []
 
 def next_ip(network_name, context):
-    client = docker.Client(version="auto")
+    client = docker.APIClient(version="auto")
     network = client.inspect_network(network_name)
 
     subnet = IPv4Network(network['IPAM']['Config'][0]['Subnet'])

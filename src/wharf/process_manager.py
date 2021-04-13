@@ -5,7 +5,7 @@ import wharf.context_globals
 
 
 def build_image(config, logger=lambda x: None):
-    client = docker.Client(version="auto")
+    client = docker.APIClient(version="auto")
     encoded_dockerfile = BytesIO(config.dockerfile.encode('utf-8'))
 
     context = docker.utils.tar(os.path.dirname(config.file_location), exclude=config.dockerignore)
@@ -44,7 +44,7 @@ def build_image(config, logger=lambda x: None):
 
 
 def run_image(config, command, logger=lambda x: None):
-    client = docker.Client(version="auto")
+    client = docker.APIClient(version="auto")
 
     all_volumes = config.volumes
     volumes = [v.split(':')[1] for v in all_volumes]
@@ -111,6 +111,6 @@ def run_image(config, command, logger=lambda x: None):
 
     wharf.context_globals.before_container_start()
     pty = dockerpty.start(client, container)
-    exit_code = int(client.inspect_container(container).get('State', {}).get('ExitCode', 0)) 
-    
+    exit_code = int(client.inspect_container(container).get('State', {}).get('ExitCode', 0))
+
     return exit_code

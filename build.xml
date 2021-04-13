@@ -28,16 +28,26 @@
     <!-- Create transient directories not checked in to source control -->
     <mkdir dir="${build}" />
     <mkdir dir="${dist}" />
-
+    
     <!-- create tools virtual environment -->
     <available property="tools.venv.created" file="${tools.venv}" />
-    <exec executable="/bin/bash" unless:true="${tools.venv.created}">
+    <exec executable="/bin/bash" unless:true="${tools.venv.created}" failonerror="true">
       <arg value="-c" />
       <arg value="python3.5 -m venv '${tools.venv}'" />
     </exec>
 
-    <exec executable="${tools.venv}/bin/pip3" unless:true="${tools.venv.created}">
+    <exec executable="${tools.venv}/bin/pip">
       <arg value="install" />
+      <arg value="certifi" />
+      <arg value="--upgrade" />
+    </exec>
+
+    <exec executable="${tools.venv}/bin/pip" unless:true="${tools.venv.created}" failonerror="true">
+      <arg value="install" />
+      <arg value="--trusted-host" />
+      <arg value="pypi.python.org" />
+      <arg value="--trusted-host" />
+      <arg value="files.pythonhosted.org" />
       <arg value="-r" />
       <arg value="${tools}/requirements.txt" />
     </exec>
@@ -58,7 +68,7 @@
 
   <target name="test" depends="venv-install">
     <!-- run tests -->
-    <exec executable="${tools.venv}/bin/pytest">
+    <exec executable="${tools.venv}/bin/pytest" failonerror="true">
       <arg value="-s" />
       <arg value="-v" />
       <arg value="test/suites" />
@@ -70,23 +80,27 @@
   <target name="dist" depends="clean, docs, build" description="generate the distribution">
     <!-- Create the distribution directory -->
     <mkdir dir="${dist}"/>
-    <exec executable="${tools.venv}/bin/python" dir="${build}/src">
+    <exec executable="${tools.venv}/bin/python" dir="${build}/src" failonerror="true">
       <arg value="${build}/src/setup.py" />
       <arg value="sdist" />
       <arg value="--dist-dir=${dist}" />
     </exec>
-    <exec executable="${tools.venv}/bin/python" dir="${build}/src">
+    <exec executable="${tools.venv}/bin/python" dir="${build}/src" failonerror="true">
       <arg value="${build}/src/setup.py" />
       <arg value="bdist_wheel" />
       <arg value="--dist-dir=${dist}" />
     </exec>
   </target>
 
-  <target name="venv-install" depends="build">
+  <target name="venv-install" depends="build">    
     <!-- install wharf into tools venv -->
-    <exec executable="${tools.venv}/bin/pip">
+    <exec executable="${tools.venv}/bin/pip" failonerror="true">
       <arg value="install" />
       <arg value="${build}/src" />
+      <arg value="--trusted-host" />
+      <arg value="pypi.python.org" />
+      <arg value="--trusted-host" />
+      <arg value="files.pythonhosted.org" />
       <arg value="--upgrade" />
     </exec>
   </target>

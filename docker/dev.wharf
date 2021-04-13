@@ -1,6 +1,6 @@
 ---
 dockerfile: |
-  FROM phusion/baseimage:0.9.19
+  FROM phusion/baseimage:0.9.20
 
   RUN apt-get update && apt-get install -y \
       sudo \
