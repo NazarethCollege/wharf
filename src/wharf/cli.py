@@ -2,11 +2,13 @@ import click
 from . import settings, api
 
 
-@click.group()
+def normalize(name):
+    return name.replace("_", "-")
+
+@click.group(context_settings={"token_normalize_func": normalize})
 @click.pass_context
 def cli(ctx):
     pass
-
 
 @cli.command()
 @click.argument('config_path')

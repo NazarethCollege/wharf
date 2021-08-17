@@ -33,7 +33,7 @@
     <available property="tools.venv.created" file="${tools.venv}" />
     <exec executable="/bin/bash" unless:true="${tools.venv.created}" failonerror="true">
       <arg value="-c" />
-      <arg value="python3.5 -m venv '${tools.venv}'" />
+      <arg value="python3 -m venv '${tools.venv}'" />
     </exec>
 
     <exec executable="${tools.venv}/bin/pip">

@@ -10,7 +10,6 @@ from setuptools import setup, find_packages
 # To use a consistent encoding
 from codecs import open
 from os import path
-from pip.download import PipSession
 
 here = path.abspath(path.dirname(__file__))
 
@@ -18,12 +17,13 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
-from pip.req import parse_requirements
+def parse_requirements(filename):
+    """ load requirements from a pip requirements file """
+    lineiter = (line.strip() for line in open(filename))
+    return [line for line in lineiter if line and not line.startswith("#")]
 
 # parse_requirements() returns generator of pip.req.InstallRequirement objects
-install_reqs = parse_requirements(path.join(here, 'requirements.txt'), session=PipSession())
-
-reqs = [str(ir.req) for ir in install_reqs]
+reqs = parse_requirements(path.join(here, 'requirements.txt'))
 
 setup(
     name='wharf',
@@ -64,7 +64,6 @@ setup(
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
     ],
 
     # What does your project relate to?
